@@ -38,8 +38,10 @@ class A2RToolWindowFactory : ToolWindowFactory {
                             add(JButton("Convert").apply {
                                 addActionListener {
                                     isEnabled = false
-                                    ng2rService.convert(c.file, c).apply {
-                                        println(result.first().markdown)
+                                    ng2rService.convert(c.file, c).then {
+                                        println(it.result.get(0).markdown)
+                                    }.onError {
+                                        println(it.message)
                                     }
                                 }
                             })
