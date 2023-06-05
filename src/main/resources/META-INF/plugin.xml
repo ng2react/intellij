@@ -1,0 +1,48 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>io.github.ng2react</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>AngularJS to React</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="ng2react@maxbilbow.com" url="https://ng2react.github.io">AngularJS to React</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description><![CDATA[
+    Enter short description for your plugin here.<br>
+    <em>most HTML tags may be used</em>
+  ]]></description>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <resource-bundle>messages.Ng2ReactBundle</resource-bundle>
+
+    <extensions defaultExtensionNs="com.intellij">
+<!--        <toolWindow factoryClass="io.github.ng2react.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>-->
+    </extensions>
+
+    <applicationListeners>
+        <listener class="io.github.ng2react.listeners.Ng2rFrameStateListener" topic="com.intellij.ide.FrameStateListener"/>
+    </applicationListeners>
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow factoryClass="io.github.ng2react.toolWindow.A2RToolWindowFactory" id="ng2react"/>
+
+        <applicationConfigurable
+                parentId="tools"
+                instance="io.github.ng2react.settings.ApplicationSettingsConfigurable"
+                id="io.github.ng2react.ApplicationSettingsConfigurable"
+                displayName="Ng2React"/>
+        <applicationService
+                serviceImplementation="io.github.ng2react.settings.A2RSettingsState"/>
+    </extensions>
+
+</idea-plugin>
