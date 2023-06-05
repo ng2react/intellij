@@ -4,12 +4,10 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
+import com.intellij.ui.components.JBBox
 import com.intellij.ui.components.JBLabel
-import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
-import io.github.ng2react.Ng2ReactBundle
-import io.github.ng2react.service.Ng2ReactService
-import java.util.*
+import io.github.ng2react.service.Ng2rService
 import javax.swing.JButton
 
 class A2RToolWindowFactory : ToolWindowFactory {
@@ -26,24 +24,30 @@ class A2RToolWindowFactory : ToolWindowFactory {
 
     class ATRToolWindow(toolWindow: ToolWindow) {
 
-        private val service = toolWindow.project.service<Ng2ReactService>()
+        private val ng2rService = toolWindow.project.service<Ng2rService>()
 
-        fun getContent() = JBPanel<JBPanel<*>>().apply {
-            val label = JBLabel(Ng2ReactBundle.message("randomLabel", "?"))
-
-            add(label)
-            add(JButton(Ng2ReactBundle.message("shuffle")).apply {
-                addActionListener {
-                    label.text = Ng2ReactBundle.message("randomLabel", service.getRandomNumber())
-                }
-            })
-
-            add(JBLabel(Ng2ReactBundle.message("current_file.name", service.getFilename() ?: "No file")))
-
-            add(JBLabel(Ng2ReactBundle.message("current_file.components.label")))
-
-            service.searchAll().forEach { component ->
-                add(JBLabel(component.name))
+        fun getContent() = JBBox.createVerticalBox().apply {
+            val root = this
+            ng2rService.searchAll().forEach {
+                val filename = it.key.substringAfterLast('/')
+                add(JBBox.createVerticalGlue().apply {
+                    add(JBLabel(filename))
+                    it.value.forEach { c ->
+                        add(JBBox.createHorizontalBox().apply {
+                            add(JBLabel(c.name))
+                            add(JButton("Convert").apply {
+                                addActionListener {
+                                    isEnabled = false
+                                    ng2rService.convert(c.file, c).then {
+                                        println(it.result.get(0).markdown)
+                                    }.onError {
+                                        println(it.message)
+                                    }
+                                }
+                            })
+                        })
+                    }
+                })
             }
         }
     }
