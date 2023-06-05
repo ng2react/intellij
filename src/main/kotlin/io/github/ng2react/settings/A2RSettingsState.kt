@@ -8,8 +8,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 import io.github.ng2react.Ng2rTestGenerationOptions
 
 @State(name = "io.github.ng2react.settings.A2RSettingsState", storages = [Storage("SdkSettingsPlugin.xml")])
-
-internal class A2RSettingsState : PersistentStateComponent<A2RSettingsState>    {
+internal class A2RSettingsState : PersistentStateComponent<A2RSettingsState> {
     var angularRoot: String? = "src/angular"
     var reactRoot: String? = "src/react"
     var testRoot: String? = "src/test"
@@ -18,11 +17,13 @@ internal class A2RSettingsState : PersistentStateComponent<A2RSettingsState>    
     var temperature = 0.2f
     var organization: String? = null
     var targetLanguage: Ng2rTestGenerationOptions.TargetLanguage? = null
+
     companion object {
         fun getInstance(): A2RSettingsState? {
             return ApplicationManager.getApplication().getService(A2RSettingsState::class.java)
         }
     }
+
     override fun getState(): A2RSettingsState? {
         return ApplicationManager.getApplication().getService(A2RSettingsState::class.java);
     }

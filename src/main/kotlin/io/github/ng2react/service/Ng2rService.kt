@@ -25,7 +25,7 @@ class Ng2rService(val project: Project) {
                 .withComponentName(component.name)
                 .withFile(file)
                 .withCwd(project.basePath!!)
-                .withSourceRoot(angularRoot)
+                .withSourceRoot(Path.of(project.basePath!!, angularRoot).toString())
                 .withApiKey(apiKey)
                 .withModel(model)
                 .withTemperature(temperature)
@@ -36,7 +36,7 @@ class Ng2rService(val project: Project) {
     }
 
     fun search(file: String): List<Ng2rComponent> {
-        val opt = Ng2rCommonOptions(projectRoot(), file)
+        val opt = Ng2rCommonOptions(project.basePath!!, file)
         return cli.search(opt).result;
     }
 
@@ -49,10 +49,6 @@ class Ng2rService(val project: Project) {
                     component
                 }
             }.groupBy { it.file }
-    }
-
-    private fun projectRoot(): String {
-        return project.basePath!!
     }
 
 }

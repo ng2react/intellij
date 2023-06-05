@@ -10,15 +10,15 @@ import javax.swing.JComponent
 import javax.swing.JPanel
 
 class A2RSettingsComponent {
-    private val myMainPanel: JPanel
-    private val angularRoot by lazy { JBTextField() }
-    private val reactRoot by lazy { JBTextField() }
-    private val apiKey by lazy { JBTextField() }
-    private val testRoot by lazy { JBTextField() }
-    private val model by lazy { JBTextField() }
-    private val temperature by lazy { JBTextField() }
-    private val organization by lazy { JBTextField() }
-    private val targetLanguage by lazy { JBTextField() }
+    private var myMainPanel: JPanel? = null
+    private val angularRoot = JBTextField()
+    private val reactRoot = JBTextField()
+    private val apiKey = JBTextField()
+    private val testRoot = JBTextField()
+    private val model = JBTextField()
+    private val temperature = JBTextField()
+    private val organization = JBTextField()
+    private val targetLanguage = JBTextField()
 
     init {
         myMainPanel = FormBuilder.createFormBuilder()

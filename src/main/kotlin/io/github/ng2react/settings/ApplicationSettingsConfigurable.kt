@@ -1,7 +1,6 @@
 package io.github.ng2react.settings
 
 import com.intellij.openapi.options.Configurable
-import io.github.ng2react.Ng2rTestGenerationOptions
 import io.github.ng2react.settings.A2RSettingsState.Companion.getInstance
 import org.jetbrains.annotations.Nls
 import javax.swing.JComponent
@@ -44,11 +43,8 @@ class ApplicationSettingsConfigurable : Configurable {
         settings.apiKey = ui.getApiKeyText()
         settings.testRoot = ui.getTestRootText()
         settings.reactRoot = ui.getReactRootText()
-
         settings.model = ui.getModelText() ?: settings.model
-
         settings.temperature = ui.getTemperatureValue() ?: settings.temperature
-
         settings.organization = ui.getOrganizationText()
         settings.targetLanguage = ui.getTargetLanguageText()
     }
