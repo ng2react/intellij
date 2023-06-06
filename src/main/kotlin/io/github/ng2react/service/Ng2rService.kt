@@ -1,6 +1,5 @@
 package io.github.ng2react.service
 
-import com.intellij.openapi.application.impl.NonBlockingReadActionImpl
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.diagnostic.thisLogger
@@ -9,9 +8,7 @@ import io.github.ng2react.*
 import io.github.ng2react.settings.A2RSettingsState
 import org.jetbrains.concurrency.AsyncPromise
 import org.jetbrains.concurrency.Promise
-import org.jetbrains.concurrency.PromiseManager
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.util.*
 
 @Service(Service.Level.PROJECT)
@@ -30,7 +27,6 @@ class Ng2rService(val project: Project) {
             opt = Ng2rConvertOptions()
                 .withComponentName(component.name)
                 .withFile(file)
-                .withCwd(project.basePath!!)
                 .withSourceRoot(Path.of(project.basePath!!, angularRoot).toString())
                 .withApiKey(apiKey)
                 .withModel(model)
@@ -46,19 +42,22 @@ class Ng2rService(val project: Project) {
     }
 
     fun search(file: String): List<Ng2rComponent> {
-        val opt = Ng2rCommonOptions(project.basePath!!, file)
-        return cli.search(opt).result;
+        val opt = Ng2rSearchOptions(file)
+        return cli.search(opt).result
     }
 
     fun searchAll(): Map<String, List<Ng2rComponent>> {
         val settings = A2RSettingsState.getInstance()!!
-        val root = Paths.get(project.basePath!!).toFile();
         return findAllAngularFiles(Path.of(project.basePath!!, settings.angularRoot))
             .flatMap {
-                search(it.relativeTo(root).path).map { component ->
+                search(it.path).map { component ->
                     component
                 }
             }.groupBy { it.file }
     }
 
+    fun checkConnection(): Boolean {
+        val apiKey = A2RSettingsState.getInstance()!!.apiKey
+        return cli.checkConnection(Ng2rCheckOptions().withApiKey(apiKey))
+    }
 }

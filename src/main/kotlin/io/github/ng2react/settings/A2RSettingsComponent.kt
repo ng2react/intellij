@@ -4,7 +4,7 @@ package io.github.ng2react.settings
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
-import io.github.ng2react.Ng2rTestGenerationOptions
+import io.github.ng2react.Ng2rGptOptions
 import org.jetbrains.annotations.NotNull
 import javax.swing.JComponent
 import javax.swing.JPanel
@@ -86,19 +86,19 @@ class A2RSettingsComponent {
     }
 
     @NotNull
-    fun getModelText(): Ng2rTestGenerationOptions.Model? {
+    fun getModelText(): Ng2rGptOptions.Model? {
         if (model.text.isBlank()) {
             return null
         }
         return try {
-            Ng2rTestGenerationOptions.Model.fromValue(model.text.lowercase())
+            Ng2rGptOptions.Model.fromValue(model.text.lowercase())
         } catch (e: IllegalArgumentException) {
             null
         }
     }
 
 
-    fun setModelText(@NotNull newText: Ng2rTestGenerationOptions.Model?) {
+    fun setModelText(@NotNull newText: Ng2rGptOptions.Model?) {
         model.text = newText?.value()
     }
 
@@ -128,18 +128,18 @@ class A2RSettingsComponent {
     }
 
     @NotNull
-    fun getTargetLanguageText(): Ng2rTestGenerationOptions.TargetLanguage? {
+    fun getTargetLanguageText(): Ng2rGptOptions.TargetLanguage? {
         if (targetLanguage.text.isBlank()) {
             return null
         }
         return try {
-            Ng2rTestGenerationOptions.TargetLanguage.fromValue(targetLanguage.text.lowercase())
+            Ng2rGptOptions.TargetLanguage.fromValue(targetLanguage.text.lowercase())
         } catch (e: IllegalArgumentException) {
             null
         }
     }
 
-    fun setTargetLanguageText(@NotNull newText: Ng2rTestGenerationOptions.TargetLanguage?) {
+    fun setTargetLanguageText(@NotNull newText: Ng2rGptOptions.TargetLanguage?) {
         targetLanguage.text = newText?.value()
     }
 }
